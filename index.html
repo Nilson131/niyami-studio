@@ -716,6 +716,50 @@
   }
   .spec-row__value{ color: var(--text-dim); }
 
+  .skills{ margin-top: 64px; }
+  .skills-grid{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border:1px solid var(--line);
+    border-radius: var(--radius);
+    overflow:hidden;
+  }
+  .skill-card{
+    background: var(--bg-elevated);
+    padding: 28px 26px;
+  }
+  .skill-card h4{
+    font-size:16px;
+    margin-bottom:14px;
+  }
+  .skill-card ul{ display:flex; flex-direction:column; gap:9px; }
+  .skill-card li{
+    position:relative;
+    padding-left:16px;
+    font-size:13.5px;
+    color: var(--text-dim);
+    line-height:1.5;
+  }
+  .skill-card li::before{
+    content:"";
+    position:absolute;
+    left:0; top:7px;
+    width:5px; height:5px;
+    border-radius:100px;
+    background: var(--cyan);
+  }
+  .skills-note{
+    margin-top:22px;
+    font-size:13.5px;
+    color: var(--text-faint);
+    font-style:italic;
+  }
+  @media (max-width: 700px){
+    .skills-grid{ grid-template-columns: 1fr; }
+  }
+
   /* ============ CONTACT ============ */
   .contact__grid{
     display:grid;
@@ -1169,7 +1213,49 @@
         </div>
         <div class="spec-row">
           <div class="spec-row__label">Langues</div>
-          <div class="spec-row__value">Français · Anglais</div>
+          <div class="spec-row__value">Français · Anglais · Italien</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="skills reveal">
+      <div class="services__sub-label">Compétences techniques</div>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <h4>LED Strip & éclairage</h4>
+          <ul>
+            <li>Installation de rubans LED adressables sur mesure, intérieur comme extérieur</li>
+            <li>Sélection du matériel selon l'environnement et les contraintes du lieu</li>
+            <li>Calcul de puissance, câblage et conception du système</li>
+            <li>Programmation et pixel mapping</li>
+            <li>Pilotage de contrôleurs : Madrix, SPI, ENTTEC, Advatek, Kystar, T-1000, Art-Net, DMX…</li>
+          </ul>
+        </div>
+        <div class="skill-card">
+          <h4>Pilotage live & performance visuelle</h4>
+          <ul>
+            <li>Pilotage LED en temps réel avec MadMapper</li>
+            <li>VJing et shows visuels avec Resolume Arena</li>
+            <li>Création de contenus visuels 2D/3D sur mesure</li>
+            <li>Intégration de la lumière et de la vidéo en contexte scénographique</li>
+          </ul>
+        </div>
+        <div class="skill-card">
+          <h4>Mapping vidéo</h4>
+          <ul>
+            <li>Mapping monumental sur bâtiments, scènes et objets</li>
+            <li>Calibrage de vidéoprojecteurs : keystone, warping, soft-edge, multi-projection</li>
+            <li>Surfaces architecturales complexes et templates sur mesure</li>
+          </ul>
+        </div>
+        <div class="skill-card">
+          <h4>Production</h4>
+          <ul>
+            <li>Coordination de projets de bout en bout, du brief à la livraison</li>
+            <li>Gestion du planning, du budget technique et des prestataires</li>
+            <li>Pilotage de la régie générale en direct, le jour de l'événement</li>
+            <li>Un interlocuteur unique, du premier échange jusqu'au bouclage</li>
+          </ul>
         </div>
       </div>
     </div>

@@ -1518,6 +1518,13 @@
   //    https://VOTRE-PROJET.supabase.co/functions/v1/send-contact-email
   const CONTACT_ENDPOINT = "https://jdgzsfpncyiyxrjgbydt.supabase.co/functions/v1/send-contact-email";
 
+  // ping silencieux à chaque visite pour maintenir la fonction Supabase active
+  fetch(CONTACT_ENDPOINT, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ping: true }),
+  }).catch(() => {}); // silencieux, aucune erreur affichée même si ça échoue
+
   const form = document.getElementById('contactForm');
   const status = document.getElementById('formSuccess');
   const submitBtn = document.getElementById('formSubmitBtn');

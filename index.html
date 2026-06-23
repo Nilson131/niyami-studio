@@ -88,6 +88,55 @@
   }
 
   /* ============ LED DIVIDER (signature element) ============ */
+  /* ── CLIENT LOGO STRIP ── */
+  .clients-strip{
+    padding: 48px 0 40px;
+    text-align: center;
+  }
+  .clients-strip__label{
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.28);
+    margin-bottom: 28px;
+  }
+  .clients-strip__track-wrap{
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  }
+  .clients-strip__track{
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    width: max-content;
+    animation: scroll-logos 28s linear infinite;
+  }
+  .clients-strip__track:hover{ animation-play-state: paused; }
+  @keyframes scroll-logos{
+    from{ transform: translateX(0); }
+    to{ transform: translateX(-50%); }
+  }
+  .client-logo{
+    width: 120px;
+    height: 52px;
+    background: rgba(255,255,255,.08);
+    border-radius: 6px;
+    flex-shrink: 0;
+    /* Une fois les vrais logos dispo : */
+    /* background: none; */
+    /* img{ width:100%; height:100%; object-fit:contain; filter:brightness(0) invert(1); opacity:.45; } */
+  }
+  .client-logo img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    opacity: .45;
+    transition: opacity .2s;
+  }
+  .client-logo:hover img{ opacity: .75; }
+
   .led-rule{
     height:2px;
     width:100%;
@@ -934,6 +983,29 @@
       <div class="hero__ctas">
         <a href="#projets" class="btn btn--solid" data-target="projets">Voir nos projets →</a>
         <a href="#contact" class="btn btn--ghost" data-target="contact">Nous contacter</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOGO CAROUSEL -->
+  <div class="clients-strip">
+    <div class="clients-strip__label">Ils nous ont fait confiance</div>
+    <div class="clients-strip__track-wrap">
+      <div class="clients-strip__track">
+        <!-- Placeholder logos — remplacer src="" par le vrai logo -->
+        <div class="client-logo"></div>
+        <div class="client-logo"></div>
+        <div class="client-logo"></div>
+        <div class="client-logo"></div>
+        <div class="client-logo"></div>
+        <div class="client-logo"></div>
+        <!-- Doublons pour le défilement infini -->
+        <div class="client-logo"></div>
+        <div class="client-logo"></div>
+        <div class="client-logo"></div>
+        <div class="client-logo"></div>
+        <div class="client-logo"></div>
+        <div class="client-logo"></div>
       </div>
     </div>
   </div>

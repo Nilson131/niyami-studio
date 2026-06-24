@@ -264,40 +264,12 @@
   }
   .accueil-content{ position:relative; z-index:1; }
 
-  .glow-blob{
+  #niyami-three{
     position:absolute;
-    border-radius: 42% 58% 65% 35% / 45% 45% 55% 55%;
-    filter: blur(70px);
-    will-change: transform;
-  }
-  .glow-blob--cyan{ background: radial-gradient(circle, rgba(0,240,255,0.55), rgba(0,240,255,0) 70%); }
-  .glow-blob--magenta{ background: radial-gradient(circle, rgba(255,31,156,0.5), rgba(255,31,156,0) 70%); }
-
-  .glow-blob--1{ width:620px; height:560px; top:2%; right:-10%; animation: driftA 34s ease-in-out infinite alternate, glowPulseBright 17s ease-in-out infinite; animation-delay: 0s, -4s; }
-  .glow-blob--2{ width:560px; height:600px; top:34%; left:-12%; animation: driftB 40s ease-in-out infinite alternate, glowPulseBright 21s ease-in-out infinite; animation-delay: 0s, -9s; }
-  .glow-blob--3{ width:460px; height:420px; top:60%; right:-8%; animation: driftA 30s ease-in-out infinite alternate-reverse, glowPulseMedium 15s ease-in-out infinite; animation-delay: 0s, -2s; }
-  .glow-blob--4{ width:520px; height:480px; top:82%; left:2%; animation: driftB 36s ease-in-out infinite alternate-reverse, glowPulseBright 19s ease-in-out infinite; animation-delay: 0s, -12s; }
-  .glow-blob--5{ width:380px; height:360px; top:6%; left:-8%; animation: driftA 26s ease-in-out infinite alternate, glowPulseSubtle 13s ease-in-out infinite; animation-delay: 0s, -6s; }
-
-  @keyframes driftA{
-    0%{ transform: translate(0,0) scale(1); }
-    100%{ transform: translate(-30px, 40px) scale(1.08); }
-  }
-  @keyframes driftB{
-    0%{ transform: translate(0,0) scale(1); }
-    100%{ transform: translate(35px, -30px) scale(1.06); }
-  }
-  @keyframes glowPulseBright{
-    0%, 100%{ opacity: 0.55; }
-    50%{ opacity: 1; }
-  }
-  @keyframes glowPulseMedium{
-    0%, 100%{ opacity: 0.4; }
-    50%{ opacity: 0.8; }
-  }
-  @keyframes glowPulseSubtle{
-    0%, 100%{ opacity: 0.18; }
-    50%{ opacity: 0.42; }
+    inset:0;
+    width:100%;
+    height:100%;
+    display:block;
   }
 
   .hero__inner{
@@ -961,11 +933,7 @@
 <!-- ============ PAGE: ACCUEIL ============ -->
 <section class="page is-active" id="accueil">
   <div class="accueil-bg" aria-hidden="true">
-    <div class="glow-blob glow-blob--cyan glow-blob--1"></div>
-    <div class="glow-blob glow-blob--magenta glow-blob--2"></div>
-    <div class="glow-blob glow-blob--cyan glow-blob--3"></div>
-    <div class="glow-blob glow-blob--magenta glow-blob--4"></div>
-    <div class="glow-blob glow-blob--cyan glow-blob--5"></div>
+    <canvas id="niyami-three"></canvas>
   </div>
 
   <div class="accueil-content">
@@ -1662,6 +1630,116 @@
     });
   }, {threshold: 0.15});
   revealEls.forEach(el => io.observe(el));
+</script>
+
+<!-- Three.js Hero Scene -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  const canvas = document.getElementById('niyami-three');
+  if(!canvas) return;
+  const parent = canvas.parentElement;
+
+  const getW = () => parent.offsetWidth;
+  const getH = () => parent.offsetHeight;
+
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setSize(getW(), getH());
+
+  const scene = new THREE.Scene();
+  const cam = new THREE.PerspectiveCamera(55, getW() / getH(), 0.1, 100);
+  cam.position.set(2.5, 0, 7);
+
+  const CYAN    = 0x00F0FF;
+  const MAGENTA = 0xFF1F9C;
+
+  // Icosaèdre principal
+  const ico = new THREE.Mesh(
+    new THREE.IcosahedronGeometry(2, 2),
+    new THREE.MeshBasicMaterial({ color: CYAN, wireframe: true, transparent: true, opacity: 0.11 })
+  );
+  scene.add(ico);
+
+  // Icosaèdre intérieur
+  const ico2 = new THREE.Mesh(
+    new THREE.IcosahedronGeometry(1.35, 1),
+    new THREE.MeshBasicMaterial({ color: MAGENTA, wireframe: true, transparent: true, opacity: 0.09 })
+  );
+  scene.add(ico2);
+
+  // Anneau équatorial cyan
+  const ring1 = new THREE.Mesh(
+    new THREE.TorusGeometry(3, 0.007, 2, 220),
+    new THREE.MeshBasicMaterial({ color: CYAN, transparent: true, opacity: 0.25 })
+  );
+  ring1.rotation.x = Math.PI * 0.5;
+  scene.add(ring1);
+
+  // Anneau incliné magenta
+  const ring2 = new THREE.Mesh(
+    new THREE.TorusGeometry(3.6, 0.005, 2, 220),
+    new THREE.MeshBasicMaterial({ color: MAGENTA, transparent: true, opacity: 0.15 })
+  );
+  ring2.rotation.x = Math.PI * 0.28;
+  ring2.rotation.z = Math.PI * 0.14;
+  scene.add(ring2);
+
+  // Anneau perpendiculaire
+  const ring3 = new THREE.Mesh(
+    new THREE.TorusGeometry(2.5, 0.004, 2, 180),
+    new THREE.MeshBasicMaterial({ color: CYAN, transparent: true, opacity: 0.09 })
+  );
+  ring3.rotation.z = Math.PI * 0.5;
+  scene.add(ring3);
+
+  // Particules
+  const pPos = new Float32Array(700 * 3);
+  for(let i = 0; i < pPos.length; i++) pPos[i] = (Math.random() - 0.5) * 26;
+  const pGeo = new THREE.BufferGeometry();
+  pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+  const pts = new THREE.Points(pGeo,
+    new THREE.PointsMaterial({ color: CYAN, size: 0.038, transparent: true, opacity: 0.28 })
+  );
+  scene.add(pts);
+
+  // Mouse parallax
+  const m = { x: 0, y: 0 }, eased = { x: 0, y: 0 };
+  document.addEventListener('mousemove', ev => {
+    m.x = (ev.clientX / window.innerWidth  - 0.5);
+    m.y = (ev.clientY / window.innerHeight - 0.5);
+  });
+
+  // Resize
+  window.addEventListener('resize', () => {
+    renderer.setSize(getW(), getH());
+    cam.aspect = getW() / getH();
+    cam.updateProjectionMatrix();
+  });
+
+  // Boucle
+  let t = 0;
+  (function tick(){
+    requestAnimationFrame(tick);
+    t += 0.003;
+    eased.x += (m.x - eased.x) * 0.03;
+    eased.y += (m.y - eased.y) * 0.03;
+
+    ico.rotation.x  =  t * 0.22 + eased.y * 0.5;
+    ico.rotation.y  =  t * 0.38 + eased.x * 0.5;
+    ico2.rotation.x = -t * 0.28 + eased.y * 0.3;
+    ico2.rotation.y = -t * 0.18 + eased.x * 0.3;
+    ring1.rotation.z = t * 0.12;
+    ring2.rotation.y = t * 0.09;
+    ring3.rotation.x = t * 0.07;
+    pts.rotation.y   = t * 0.035;
+
+    const b = 1 + Math.sin(t * 0.9) * 0.025;
+    ico.scale.setScalar(b);
+
+    renderer.render(scene, cam);
+  })();
+})();
 </script>
 
 </body>
